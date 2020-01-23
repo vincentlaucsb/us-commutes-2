@@ -1,15 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Map, Marker, Popup, TileLayer, GeoJSON, MapControl } from 'react-leaflet'
 import { GeoJsonObject } from 'geojson';
-import * as geojson from 'geojson';
-import { StyleFunction } from 'leaflet';
 import Legend from './Legend';
 import CountyData from './CountyData';
+import { PercentileData } from './Types';
 
 interface AppState {
+    column: string;
     data?: GeoJsonObject;
+    percentiles?: PercentileData;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -17,6 +17,7 @@ class App extends React.Component<{}, AppState> {
         super(props);
 
         this.state = {
+            column: "HC01_EST_VC55",
             data: undefined
         };
     }
@@ -31,14 +32,18 @@ class App extends React.Component<{}, AppState> {
         fetch('http://localhost:5000/map')
             .then(response => response.json())
             .then(data => this.setState({ data }));
+
+        fetch(`http://localhost:5000/percentiles/${this.state.column}`)
+            .then(response => response.json())
+            .then(data => this.setState({ percentiles: data }));
     }
-    
 
     render() {
         const position: [number, number] = [37.8, -96];
-        const counties = this.state.data ? <CountyData
+        const counties = this.state.data && this.state.percentiles ? <CountyData
+            column={this.state.column}
             data={this.state.data}
-            column="HC01_EST_VC55"
+            percentiles={this.state.percentiles}
         /> : <></>
 
         return (

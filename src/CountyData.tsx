@@ -2,11 +2,7 @@
 import { GeoJSON } from "react-leaflet";
 import { GeoJsonObject } from "geojson";
 import React from "react";
-
-type PercentileKeys = 0.125 | 0.25 | 0.375 | 0.5 | 0.625 | 0.75 | 0.875;
-type PercentileData = {
-    [K in PercentileKeys]: number;
-}
+import { PercentileData } from "./Types";
 
 function getFillColor(value: number, pct: PercentileData) {
     return value > pct[0.875] ? '#0c2c84' :
@@ -22,46 +18,22 @@ function getFillColor(value: number, pct: PercentileData) {
 interface CountyDataProps {
     column: string;
     data: GeoJsonObject;
+    percentiles: PercentileData;
 }
 
-interface CountyDataState {
-    percentiles?: PercentileData;
-}
+export default function CountyData(props: CountyDataProps) {
+    const styleCounty: StyleFunction = (feature: any) => {
+        return {
+            fillColor: getFillColor(
+                feature.properties[props.column] as number,
+                props.percentiles
+            ),
+            fillOpacity: 0.8,
+            stroke: false
+        }
+    };
 
-export default class CountyData extends React.Component<CountyDataProps, CountyDataState> {
-    constructor(props: CountyDataProps) {
-        super(props);
-        this.state = {};
-    }
-
-    componentDidMount() {
-        fetch(`http://localhost:5000/percentiles/${this.props.column}`)
-            .then(response => response.json())
-            .then(data => this.setState({ percentiles: data }));
-    }
-
-    render() {
-        const styleCounty: StyleFunction = (feature: any) => {
-            return {
-                fillColor: getFillColor(
-                    feature.properties[this.props.column] as number,
-                    this.state.percentiles || {
-                        0.125: 0,
-                        0.25: 0,
-                        0.375: 0,
-                        0.5: 0,
-                        0.625: 0,
-                        0.75: 0,
-                        0.875: 0
-                    }
-                ),
-                fillOpacity: 0.8,
-                stroke: false
-            }
-        };
-
-        return (
-            <GeoJSON data={this.props.data} style={styleCounty} />
-        );
-    }
+    return (
+        <GeoJSON data={props.data} style={styleCounty} />
+    );
 }

@@ -1,6 +1,5 @@
-﻿import { MapControl, MapControlProps, withLeaflet } from "react-leaflet";
+﻿import { MapControlProps } from "react-leaflet";
 import React from "react";
-import { Control, DomUtil } from "leaflet";
 import { Columns } from "./Types";
 import ReactDOM from "react-dom";
 
@@ -21,37 +20,12 @@ export function VariableSelector(props: VariableChangerProps) {
 
     if (parent) {
         return ReactDOM.createPortal(
-            <>
-                <label>Variable of Interest</label>
-                <select onChange={handleChange}>
-                    {options}
-                </select>
-            </>,
+            <select onChange={handleChange}>
+                {options}
+            </select>,
             parent
         );
     }
 
     return <></>
 }
-
-class VariableChanger extends MapControl {
-    createLeafletElement(props: any) { return new Control(); }
-
-    componentDidMount() {
-        const legend = new Control({ position: "bottomleft" });
-        legend.onAdd = function () {
-            var div = DomUtil.create('div', 'info');
-            div.setAttribute('id', 'variable-changer');
-            return div;
-        };
-
-        if (this.props.leaflet) {
-            const { map } = this.props.leaflet;
-            if (map) {
-                legend.addTo(map);
-            }
-        }
-    }
-}
-
-export default withLeaflet(VariableChanger);

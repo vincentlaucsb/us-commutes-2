@@ -14,6 +14,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-leaflet": "^2.6.1",
+    "react-modal": "^3.11.1",
     "react-scripts": "3.3.0",
     "typescript": "^3.7.5"
   },
@@ -39,6 +40,9 @@
     ]
   },
   "devDependencies": {
-    "@types/react-leaflet": "^2.5.0"
+    "@types/react-leaflet": "^2.5.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
+    "webpack": "^4.41.5"
   }
 }

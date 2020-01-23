@@ -1,0 +1,43 @@
+﻿body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* || Info Boxes */
+.info {
+    * {
+        margin: 0;
+    }
+
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    color: #555;
+}
+
+.info#info-box {
+    #variable-changer {
+        background: rgba(0,0,0,0.2);
+    }
+
+    #county-info {
+        padding: 0.5em;
+    }
+
+    select {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+
+        option {
+            font-weight: normal;
+        }
+    }
+}

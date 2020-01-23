@@ -16,8 +16,16 @@ class Queries(object):
             with psycopg2.connect("dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
                 cur = conn.cursor()
                 cur.execute(sql);
-                Queries.saved_queries[sql] = cur.fetchall()
-                return Queries.saved_queries[sql]
+
+                result = cur.fetchall()
+                if len(result) == 1:
+                    result = result[0]
+
+                    if len(result) == 1:
+                        result = result[0]
+
+                Queries.saved_queries[sql] = jsonify(result)
+                return result
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -100,7 +108,7 @@ WHERE
     S."STATE" = (F.features->'properties'->>'STATE')::bigint
 ) as subquery'''
 
-    return jsonify(Queries.query(query)[0][0]);
+    return Queries.query(query)
 
 
 @app.route("/percentiles/<column>")
@@ -117,4 +125,4 @@ def percentiles(column):
     ) FROM "ACS_16_5YR_S0801_with_ann.csv"
     '''.format(col=column)
 
-    return jsonify(Queries.query(query)[0][0]);
+    return Queries.query(query)

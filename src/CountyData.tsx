@@ -10,6 +10,7 @@ interface CountyDataProps {
     column: string;
     data: GeoJsonObject;
     percentiles: PercentileData;
+    openModal: () => void;
     updateActiveCounty: (geoId: string) => void;
     updateActiveCountyData: (data: CensusMapData) => void;
 }
@@ -32,8 +33,10 @@ export default function CountyData(props: CountyDataProps) {
         <GeoJSON
             onEachFeature={(feature, layer) =>
                 layer.on({
+                    click: () => {
+                        props.openModal();
+                    },
                     mouseover: () => {
-                        console.log(feature.properties.GEO_ID);
                         props.updateActiveCounty(feature.properties.GEO_ID);
                         props.updateActiveCountyData(feature.properties);
                     }

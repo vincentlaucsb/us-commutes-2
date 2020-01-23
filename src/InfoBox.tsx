@@ -1,28 +1,29 @@
 ﻿import { MapControl, MapControlProps, withLeaflet } from "react-leaflet";
 import { Control, DomUtil } from "leaflet";
 import { CensusMapData, ColumnData } from "./Types";
+import React from "react";
+import ReactDOM from "react-dom";
 
 interface InfoBoxProps extends MapControlProps {
     column: string;
     columnData: ColumnData;
-    data: CensusMapData;
+    data?: CensusMapData;
 }
 
-export class InfoBox extends MapControl<InfoBoxProps> {
+export class InfoBoxContainer extends MapControl {
     createLeafletElement(props: any) { return new Control(); }
     div?: HTMLElement;
 
     componentDidMount() {
         const legend = new Control({ position: "topright" });
-        const data = this.props.data;
         const _this = this;
 
         legend.onAdd = () => {
             _this.div = DomUtil.create('div', 'info');
-            this.populate();
+            _this.div.setAttribute('id', 'info-box');
             return _this.div;
         };
-        
+
         if (this.props.leaflet) {
             const { map } = this.props.leaflet;
             if (map) {
@@ -30,28 +31,28 @@ export class InfoBox extends MapControl<InfoBoxProps> {
             }
         }
     }
-
-    componentDidUpdate(prevProps: InfoBoxProps) {
-        const data = this.props.data;
-        if (prevProps.data.GEO_ID !== this.props.data.GEO_ID) {
-            this.populate();
-        }
-    }
-
-    /** Populate the info box */
-    populate() {
-        const data = this.props.data;
-        if (this.div) {
-            const header = `<hgroup>
-<h4>${this.props.columnData.label}</h4>
-<h5>${data.NAME} ${data.LSAD}</h5>
-</hgroup>`;
-            const body = `${data[this.props.column]}
-${this.props.columnData.units}`
-
-            this.div.innerHTML = `${header} ${body}`
-        }
-    }
 }
 
-export default withLeaflet<InfoBoxProps>(InfoBox);
+export function InfoBox(props: InfoBoxProps) {
+    const parent = document.getElementById('info-box');
+    const data = props.data;
+    const subtitle = data ? <h4>{data.NAME} {data.LSAD}</h4> : <></>
+    const body = data ? <>{data[props.column]} {props.columnData.units}</>: <></>;
+
+    if (parent) {
+        return ReactDOM.createPortal(
+            <>
+                <div id="variable-changer"></div>
+                <div id="county-info">
+                    {subtitle}
+                    {body}
+                </div>
+            </>,
+            parent
+        );
+    }
+
+    return <></>
+}
+
+export default withLeaflet(InfoBoxContainer);

@@ -6,7 +6,7 @@ import { Control, DomUtil } from "leaflet";
  * https://stackoverflow.com/questions/57403442/how-to-add-a-legend-to-the-map-using-react-leaflet-without-using-refs-and-manua
  * https://codesandbox.io/s/how-to-add-a-legend-to-the-map-using-react-leaflet-6yqs5
  */
-export class Legend extends MapControl {
+class Legend extends MapControl {
     createLeafletElement(props: any) { return new Control(); }
 
     componentDidMount() {
@@ -30,7 +30,6 @@ export class Legend extends MapControl {
             }
         }
     }
-
 }
 
 export default withLeaflet(Legend);

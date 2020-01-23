@@ -2,7 +2,7 @@
 import { GeoJSON } from "react-leaflet";
 import { GeoJsonObject } from "geojson";
 import React from "react";
-import { PercentileData } from "./Types";
+import { PercentileData, CensusMapData } from "./Types";
 import { getFillColor } from "./Helpers";
 
 interface CountyDataProps {
@@ -11,6 +11,7 @@ interface CountyDataProps {
     data: GeoJsonObject;
     percentiles: PercentileData;
     updateActiveCounty: (geoId: string) => void;
+    updateActiveCountyData: (data: CensusMapData) => void;
 }
 
 export default function CountyData(props: CountyDataProps) {
@@ -32,7 +33,9 @@ export default function CountyData(props: CountyDataProps) {
             onEachFeature={(feature, layer) =>
                 layer.on({
                     mouseover: () => {
+                        console.log(feature.properties.GEO_ID);
                         props.updateActiveCounty(feature.properties.GEO_ID);
+                        props.updateActiveCountyData(feature.properties);
                     }
                 })}
             data={props.data}

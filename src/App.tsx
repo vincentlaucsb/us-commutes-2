@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { Map, TileLayer } from 'react-leaflet'
 import { GeoJsonObject } from 'geojson';
-import Legend from './Legend';
+import LegendContainer, { Legend } from './Legend';
 import CountyData from './CountyData';
 import { PercentileData, CensusMapData, Columns } from './Types';
 import InfoBoxContainer, { InfoBox } from './InfoBox';
@@ -115,13 +115,19 @@ class App extends React.Component<{}, AppState> {
                     {counties}
 
                     <InfoBoxContainer />
+                    <LegendContainer />
+
                     <InfoBox 
                         data={this.state.activeCountyData}
                         column={this.state.column}
                         columnData={this.currentColumn}
                     />
                     <VariableSelector updateColumn={this.updateColumn.bind(this)} />
-                    <Legend />
+                    <Legend
+                        data={this.state.activeCountyData}
+                        column={this.state.column}
+                        percentiles={this.state.percentiles}
+                    />
                 </Map>
             </>
         );

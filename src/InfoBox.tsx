@@ -36,7 +36,7 @@ export class InfoBoxContainer extends MapControl {
 export function InfoBox(props: InfoBoxProps) {
     const parent = document.getElementById('info-box');
     const data = props.data;
-    const subtitle = data ? <h4>{data.NAME} {data.LSAD}</h4> : <></>
+    const subtitle = data ? <h4>{data.NAME} {data.LSAD}, {data.STATE_NAME}</h4> : <></>
     const body = data ? <>{data[props.column]} {props.columnData.units}</>: <></>;
 
     if (parent) {

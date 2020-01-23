@@ -3,12 +3,14 @@ export type PercentileData = {
     [K in PercentileKeys]: number;
 }
 
+/** Names of properties for a field */
 export interface CensusMapData {
     [key: string]: number | string;
 
     GEO_ID: string;
     NAME: string;
     LSAD: string;
+    STATE_NAME: string;
 }
 
 export interface ColumnData {

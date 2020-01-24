@@ -131,13 +131,59 @@ code {
 
         .tabs-children {
             background: $active-tab-fill;
+            display: flex;
             flex-grow: 1;
         }
     }
 
-    .graph-holder {
-        width: 100%;
-        height: 100%;
+    .graph-container {
+        flex-grow: 1;
+    }
+
+    .graph-info {
+        max-width: 20vw;
+
+        .graph-info-row > * {
+            margin: 0.5em 0;
+        }
+
+        .graph-info-label {
+            display: block;
+            font-size: initial;
+            text-transform: uppercase;
+
+            * {
+                font-weight: normal;
+            }
+        }
+
+        .graph-info-data {
+            font-size: 24px;
+            font-weight: bold;
+
+            .graph-info-units {
+                margin-left: 0.5em;
+                font-size: initial;
+            }
+        }
+
+        > div {
+            border-top: 1px solid rgba(0, 0, 0, 0.5);
+            margin: 1em;
+        }
+
+        table {
+            text-align: left;
+            width: 100%;
+
+            // Distribute columns evenly
+            table-layout: fixed;
+
+            th {
+                font-weight: normal;
+                text-transform: uppercase;
+            }
+        }
     }
 }
 

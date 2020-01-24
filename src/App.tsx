@@ -49,12 +49,14 @@ class App extends React.Component<{}, AppState> {
     get modal() {
         const countyData = this.state.activeCountyData;
 
-        if (countyData) {
+        if (countyData && this.state.data) {
             return (
                 <CountyModal
                     isOpen={this.state.modalOpen}
                     close={() => this.setState({ modalOpen: false })}
-                    data={countyData} />
+                    data={countyData}
+                    numCounties={this.state.data['features'].length}
+                />
             );
         }
 

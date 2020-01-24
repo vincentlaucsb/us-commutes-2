@@ -103,7 +103,6 @@ class App extends React.Component<{}, AppState> {
             updateActiveCountyData={this.updateActiveCountyData}
         /> : <></>
         
-        // TODO: Update percentiles
         return (
             <>
                 {this.modal}

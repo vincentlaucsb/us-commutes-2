@@ -152,7 +152,9 @@ export default function CountyModal(props: CountyModalProps) {
     const censusData = props.data;
 
     return (
-        <ReactModal isOpen={props.isOpen} overlayClassName="county-overlay" className="county-modal">
+        <ReactModal isOpen={props.isOpen}
+            className="county-modal"
+            overlayClassName="county-overlay">
             <header className="modal-header">
                 <h1 className="modal-title">{props.data.NAME} {props.data.LSAD}, {props.data.STATE_NAME}</h1>
                 <span className="modal-close" onClick={() => props.close()}></span>

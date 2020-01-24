@@ -8,6 +8,7 @@ import { PercentileData, CensusMapData, Columns } from './Types';
 import InfoBoxContainer, { InfoBox } from './InfoBox';
 import { VariableSelector } from './VariableChanger';
 import CountyModal from './CountyModal';
+import ReactModal from "react-modal";
 
 interface AppState {
     activeCounty?: string;
@@ -102,6 +103,8 @@ class App extends React.Component<{}, AppState> {
             updateActiveCounty={this.updateActiveCounty}
             updateActiveCountyData={this.updateActiveCountyData}
         /> : <></>
+
+        ReactModal.setAppElement(document.getElementById("root"));
         
         return (
             <>

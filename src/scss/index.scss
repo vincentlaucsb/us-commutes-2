@@ -160,6 +160,7 @@ code {
         .graph-info-data {
             font-size: 24px;
             font-weight: bold;
+            color: #19351f;
 
             .graph-info-units {
                 margin-left: 0.5em;
@@ -175,7 +176,6 @@ code {
         table {
             text-align: left;
             width: 100%;
-
             // Distribute columns evenly
             table-layout: fixed;
 

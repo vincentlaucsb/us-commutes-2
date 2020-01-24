@@ -201,9 +201,9 @@ export default function CountyModal(props: CountyModalProps) {
                                 <YAxis label={{ value: "%", angle: -90, position: 'insideLeft' }} />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="total" fill="#8884d8" />
-                                <Bar dataKey="male" fill="#8884d8" />
-                                <Bar dataKey="female" fill="#82ca9d" />
+                                <Bar dataKey="total" fill="#1D1725" />
+                                <Bar dataKey="male" fill="#0E65B5" />
+                                <Bar dataKey="female" fill="#E1B419" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -261,9 +261,9 @@ export default function CountyModal(props: CountyModalProps) {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="total" fill="#8884d8" />
-                            <Bar dataKey="male" fill="#8884d8" />
-                            <Bar dataKey="female" fill="#82ca9d" />
+                            <Bar dataKey="total" fill="#1D1725" />
+                            <Bar dataKey="male" fill="#0E65B5" />
+                            <Bar dataKey="female" fill="#E1B419" />
                         </BarChart>
                     </ResponsiveContainer>
                 </React.Fragment>

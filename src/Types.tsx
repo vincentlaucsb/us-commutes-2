@@ -24,8 +24,23 @@ export const Columns = new Map<string, ColumnData>([
         units: 'minutes'
     }],
 
+    ['LONG_COMMUTES', {
+        label: 'Long Commutes (45+ Minutes)',
+        units: 'percent (of workers)'
+    }],
+
     ['HC01_EST_VC54', {
         label: 'Extreme Commutes (60+ Minutes)',
+        units: 'percent (of workers)'
+    }],
+
+    ['HC01_EST_VC19', {
+        label: 'Worked Outside County of Residence',
+        units: 'percent (of workers)'
+    }],
+
+    ['HC01_EST_VC20', {
+        label: 'Worked Outside State of Residence',
         units: 'percent (of workers)'
     }],
 

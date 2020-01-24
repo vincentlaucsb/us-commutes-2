@@ -59,24 +59,26 @@ export function MapLegend(props: MapLegendProps) {
     let children: any = <></>
     const percentileData = props.percentiles;
     if (percentileData) {
-        children = percentiles.map(
-            (pct: number, index: number, arr: number[]) => {
-                const lowerBound = (index === 0) ?
-                    0 : percentileData[percentiles[index - 1]];
-                const label = (pct === 1) ?
-                    `${lowerBound}+` :
-                    `${lowerBound} -- ${percentileData[pct]}`;
+        children = (
+            <div className="legend-swatches">
+                {percentiles.map(
+                    (pct: number, index: number, arr: number[]) => {
+                        const lowerBound = (index === 0) ?
+                            0 : percentileData[percentiles[index - 1]];
+                        const label = (pct === 1) ?
+                            `${lowerBound}+` :
+                            `${lowerBound} - ${percentileData[pct]}`;
 
-                return (
-                    <>
-                        <i className="legend-swatch"
-                            style={{ backgroundColor: getColor(pct) }}></i>
-                        {label} 
-                        <br />
-                    </>
-                );
-            }
-        )
+                        return (
+                            <>
+                                <i className="legend-swatch" style={{ backgroundColor: getColor(pct) }}></i>
+                                <span className="legend-label">{label}</span>
+                            </>
+                        );
+                    }
+                )}
+            </div>
+        );
     }
 
     if (parent) {

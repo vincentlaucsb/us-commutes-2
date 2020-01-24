@@ -1,7 +1,8 @@
-﻿import { BarChart, CartesianGrid, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+﻿import { BarChart, ResponsiveContainer, CartesianGrid, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { CensusMapData } from "./Types";
 import ReactModal from "react-modal";
 import React from 'react';
+import Tabs from './Tabs';
 
 interface CountyModalProps {
     close: () => void;
@@ -151,32 +152,43 @@ export default function CountyModal(props: CountyModalProps) {
     const censusData = props.data;
 
     return (
-        <ReactModal isOpen={props.isOpen}>
-            <h2>{props.data.NAME} {props.data.LSAD}, {props.data.STATE_NAME}</h2>
-            <h3>Commute Times</h3>
-            <BarChart width={730} height={250} data={commuteTimesData(censusData)}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="total" fill="#8884d8" />
-                <Bar dataKey="male" fill="#8884d8" />
-                <Bar dataKey="female" fill="#82ca9d" />
-            </BarChart>
+        <ReactModal isOpen={props.isOpen} overlayClassName="county-overlay" className="county-modal">
+            <header className="modal-header">
+                <h1 className="modal-title">{props.data.NAME} {props.data.LSAD}, {props.data.STATE_NAME}</h1>
+                <span className="modal-close" onClick={() => props.close()}></span>
+            </header>
+            <Tabs>
+                <div key="Commute Times" className="graph-holder">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart width={500} height={250} data={commuteTimesData(censusData)}
+                            margin={{ top: 16, right: 16, left: 16, bottom: 16 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="total" fill="#8884d8" />
+                            <Bar dataKey="male" fill="#8884d8" />
+                            <Bar dataKey="female" fill="#82ca9d" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
 
-            <h3>Mode of Transportation</h3>
-            <BarChart width={730} height={250} data={transporationData(censusData)}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="total" fill="#8884d8" />
-                <Bar dataKey="male" fill="#8884d8" />
-                <Bar dataKey="female" fill="#82ca9d" />
-            </BarChart>
-
-            <button onClick={() => props.close()}>Close</button>
+                <div key="Mode of Transportation" className="graph-holder">
+                    <ResponsiveContainer>
+                        <BarChart width={730} height={250} data={transporationData(censusData)}
+                            margin={{ top: 16, right: 16, left: 16, bottom: 16 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="total" fill="#8884d8" />
+                            <Bar dataKey="male" fill="#8884d8" />
+                            <Bar dataKey="female" fill="#82ca9d" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </Tabs>
         </ReactModal>
     );}

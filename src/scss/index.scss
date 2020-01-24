@@ -9,15 +9,20 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+%bordered {
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+
 /* || Info Boxes */
 .info {
+    @extend %bordered;
+
     * {
         margin: 0;
     }
 
     background: rgba(255, 255, 255, 0.8);
-    border: 2px solid rgba(0,0,0,0.2);
-    border-radius: 4px;
     color: #555;
 }
 
@@ -44,10 +49,100 @@ code {
 
 .info#legend {
     padding: 0.5em;
+
+    .legend-swatches {
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        grid-column-gap: 4px;
+
+        .legend-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        .legend-label {
+            align-self: center;
+        }
+    }
 }
 
-.legend-swatch {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
+.county-modal {
+    * {
+        margin: 0;
+    }
+
+    > *:not(:last-child) {
+        margin-bottom: 16px;
+    }
+
+    @extend %bordered;
+    $active-tab-fill: rgba(255, 255, 255, 0.8);
+
+    background: rgba(242,242,242,0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 67vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    height: 67vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1em 1.5em;
+
+    .modal-header {
+        display: flex;
+    }
+
+    .modal-title {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .modal-close {
+        width: 0;
+        position: relative;
+        left: -12px;
+        cursor: pointer;
+
+        &::before {
+            content: "\2573";
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    .tabs-container {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: column;
+
+        .tabs-button {
+            background: none;
+            border: none;
+            padding: 0.5em 1em;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .tabs-button-active {
+            background: $active-tab-fill;
+        }
+
+        .tabs-children {
+            background: $active-tab-fill;
+            flex-grow: 1;
+        }
+    }
+
+    .graph-holder {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.county-overlay {
+    position: fixed;
+    inset: 0px;
+    background-color: rgba(255, 255, 255, 0.25);
 }

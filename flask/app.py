@@ -36,6 +36,9 @@ def init_db():
         SELECT
             "GEO.id",
 
+            /* Workers 16 years and over */
+            "HC01_EST_VC01", "HC02_EST_VC01", "HC03_EST_VC01", 
+
             /* Travel Time Categories */
             "HC01_EST_VC46", "HC02_EST_VC46", "HC03_EST_VC46",
             "HC01_EST_VC47", "HC02_EST_VC47", "HC03_EST_VC47",
@@ -44,10 +47,16 @@ def init_db():
             "HC01_EST_VC50", "HC02_EST_VC50", "HC03_EST_VC50",
             "HC01_EST_VC51", "HC02_EST_VC51", "HC03_EST_VC51",
             "HC01_EST_VC52", "HC02_EST_VC52", "HC03_EST_VC52",
-            "HC01_EST_VC53", "HC02_EST_VC53", "HC03_EST_VC53",
-            "HC01_EST_VC54", "HC02_EST_VC54", "HC03_EST_VC54",
+            "HC01_EST_VC53", "HC02_EST_VC53", "HC03_EST_VC53", /* 45-59 minutes */
+            "HC01_EST_VC54", "HC02_EST_VC54", "HC03_EST_VC54", /* 60+ minutes */
             "HC01_EST_VC55", "HC02_EST_VC55", "HC03_EST_VC55", /* Mean Travel Time */
+
+            ("HC01_EST_VC53" + "HC02_EST_VC53" + "HC03_EST_VC53") as "LONG_COMMUTES",
         
+            /* Location of Work */
+            "HC01_EST_VC19", /* Outside county */
+            "HC01_EST_VC20", /* Outside state */
+
             /* Mode of Transport */
             "HC01_EST_VC03", "HC02_EST_VC03", "HC03_EST_VC03",
             "HC01_EST_VC04", "HC02_EST_VC04", "HC03_EST_VC04",
@@ -107,7 +116,7 @@ def map():
             "state.txt" S
         WHERE
             D1."GEO.id" = (F.features->'properties'->>'GEO_ID') AND
-        S."STATE" = (F.features->'properties'->>'STATE')::bigint
+            S."STATE" = (F.features->'properties'->>'STATE')::bigint
     ) as subquery
     '''
 
@@ -125,7 +134,7 @@ def percentiles(column):
         0.625, percentile_cont(0.625) WITHIN GROUP(ORDER BY "{col}"),
         0.75, percentile_cont(0.75) WITHIN GROUP(ORDER BY "{col}"),
         0.875, percentile_cont(0.875) WITHIN GROUP(ORDER BY "{col}")
-    ) FROM "ACS_16_5YR_S0801_with_ann.csv"
+    ) FROM commute_times
     '''.format(col=column)
 
     return Queries.query(query)

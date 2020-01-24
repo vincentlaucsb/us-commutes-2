@@ -30,6 +30,36 @@ class Queries(object):
 def init_db():
     with psycopg2.connect("dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
         cur = conn.cursor()
+        cur.execute('''
+        DROP VIEW IF EXISTS commute_times;
+        CREATE VIEW commute_times AS
+        SELECT
+            "GEO.id",
+
+            /* Travel Time Categories */
+            "HC01_EST_VC46", "HC02_EST_VC46", "HC03_EST_VC46",
+            "HC01_EST_VC47", "HC02_EST_VC47", "HC03_EST_VC47",
+            "HC01_EST_VC48", "HC02_EST_VC48", "HC03_EST_VC48",
+            "HC01_EST_VC49", "HC02_EST_VC49", "HC03_EST_VC49",
+            "HC01_EST_VC50", "HC02_EST_VC50", "HC03_EST_VC50",
+            "HC01_EST_VC51", "HC02_EST_VC51", "HC03_EST_VC51",
+            "HC01_EST_VC52", "HC02_EST_VC52", "HC03_EST_VC52",
+            "HC01_EST_VC53", "HC02_EST_VC53", "HC03_EST_VC53",
+            "HC01_EST_VC54", "HC02_EST_VC54", "HC03_EST_VC54",
+            "HC01_EST_VC55", "HC02_EST_VC55", "HC03_EST_VC55", /* Mean Travel Time */
+        
+            /* Mode of Transport */
+            "HC01_EST_VC03", "HC02_EST_VC03", "HC03_EST_VC03",
+            "HC01_EST_VC04", "HC02_EST_VC04", "HC03_EST_VC04",
+            "HC01_EST_VC05", "HC02_EST_VC05", "HC03_EST_VC05",
+            "HC01_EST_VC10", "HC02_EST_VC10", "HC03_EST_VC10",
+            "HC01_EST_VC11", "HC02_EST_VC11", "HC03_EST_VC11",
+            "HC01_EST_VC12", "HC02_EST_VC12", "HC03_EST_VC12",
+            "HC01_EST_VC13", "HC02_EST_VC13", "HC03_EST_VC13",
+            "HC01_EST_VC14", "HC02_EST_VC14", "HC03_EST_VC14" /* Work at home */
+        
+        FROM "ACS_16_5YR_S0801_with_ann.csv";
+''')
 
 def init_app():
     init_db()
@@ -73,7 +103,7 @@ def map():
             ) AS features
         FROM
             _features F,
-            "ACS_16_5YR_S0801_with_ann.csv" D1,
+            commute_times D1,
             "state.txt" S
         WHERE
             D1."GEO.id" = (F.features->'properties'->>'GEO_ID') AND

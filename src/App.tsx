@@ -2,12 +2,12 @@ import React from 'react';
 import './App.css';
 import { Map, TileLayer } from 'react-leaflet'
 import { GeoJsonObject } from 'geojson';
-import LegendContainer, { Legend } from './Legend';
+import MapLegendContainer, { MapLegend } from './Legend';
 import CountyData from './CountyData';
 import { PercentileData, CensusMapData, Columns } from './Types';
 import InfoBoxContainer, { InfoBox } from './InfoBox';
 import { VariableSelector } from './VariableChanger';
-import ReactModal from "react-modal";
+import CountyModal from './CountyModal';
 
 interface AppState {
     activeCounty?: string;
@@ -47,13 +47,13 @@ class App extends React.Component<{}, AppState> {
 
     get modal() {
         const countyData = this.state.activeCountyData;
+
         if (countyData) {
             return (
-                <ReactModal isOpen={this.state.modalOpen}>
-                    <h2>{countyData.NAME} {countyData.LSAD}</h2>
-                    <p>Test</p>
-                    <button onClick={() => this.setState({ modalOpen: false })}>Close</button>
-                </ReactModal>
+                <CountyModal
+                    isOpen={this.state.modalOpen}
+                    close={() => this.setState({ modalOpen: false })}
+                    data={countyData} />
             );
         }
 
@@ -115,7 +115,7 @@ class App extends React.Component<{}, AppState> {
                     {counties}
 
                     <InfoBoxContainer />
-                    <LegendContainer />
+                    <MapLegendContainer />
 
                     <InfoBox 
                         data={this.state.activeCountyData}
@@ -123,7 +123,7 @@ class App extends React.Component<{}, AppState> {
                         columnData={this.currentColumn}
                     />
                     <VariableSelector updateColumn={this.updateColumn.bind(this)} />
-                    <Legend
+                    <MapLegend
                         data={this.state.activeCountyData}
                         column={this.state.column}
                         percentiles={this.state.percentiles}

@@ -16,6 +16,7 @@
     "react-leaflet": "^2.6.1",
     "react-modal": "^3.11.1",
     "react-scripts": "3.3.0",
+    "recharts": "^2.0.0-beta.1",
     "typescript": "^3.7.5"
   },
   "scripts": {

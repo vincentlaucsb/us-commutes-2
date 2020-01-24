@@ -9,7 +9,7 @@ import { FillColor } from "./Helpers";
  * https://stackoverflow.com/questions/57403442/how-to-add-a-legend-to-the-map-using-react-leaflet-without-using-refs-and-manua
  * https://codesandbox.io/s/how-to-add-a-legend-to-the-map-using-react-leaflet-6yqs5
  */
-class LegendContainer extends MapControl {
+class MapLegendContainer extends MapControl {
     createLeafletElement(props: any) { return new Control(); }
 
     componentDidMount() {
@@ -29,13 +29,13 @@ class LegendContainer extends MapControl {
     }
 }
 
-interface LegendProps {
+interface MapLegendProps {
     column?: string;
     data?: CensusMapData;
     percentiles?: PercentileData;
 }
 
-export function Legend(props: LegendProps) {
+export function MapLegend(props: MapLegendProps) {
     const parent = document.getElementById('legend');
     const percentiles = Array.from(FillColor.keys());
 
@@ -92,4 +92,4 @@ export function Legend(props: LegendProps) {
     return <></>
 }
 
-export default withLeaflet(LegendContainer);
+export default withLeaflet(MapLegendContainer);

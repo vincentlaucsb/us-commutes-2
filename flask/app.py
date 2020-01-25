@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from os import getenv
 import psycopg2
 
-PG_PASSWORD = getenv('US_COMMUTES_PASS')
+from secret import PG_PASSWORD
 
 class Queries(object):
     saved_queries = dict()
@@ -13,7 +13,8 @@ class Queries(object):
         try:
             return Queries.saved_queries[sql]
         except KeyError:
-            with psycopg2.connect("dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
+            print("Connecting with {}".format(PG_PASSWORD))
+            with psycopg2.connect("host=localhost dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
                 cur = conn.cursor()
                 cur.execute(sql);
 
@@ -28,7 +29,7 @@ class Queries(object):
                 return result
 
 def init_db():
-    with psycopg2.connect("dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
+    with psycopg2.connect("host=localhost dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
         cur = conn.cursor()
         cur.execute('''
         DROP VIEW IF EXISTS commute_times;
@@ -138,3 +139,6 @@ def percentiles(column):
     '''.format(col=column)
 
     return Queries.query(query)
+	
+if __name__ == "__main__":
+	app.run(host="0.0.0.0")

@@ -2,18 +2,18 @@ from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
 from os import getenv
 import psycopg2
+import pickle
 
 from secret import PG_PASSWORD
 
 class Queries(object):
-    saved_queries = dict()
-
     @staticmethod
     def query(sql: str):
         try:
-            return Queries.saved_queries[sql]
-        except KeyError:
-            print("Connecting with {}".format(PG_PASSWORD))
+            with open('cache-{}'.format(hash(sql)), mode='rb') as infile:
+                return pickle.load(infile)
+                
+        except FileNotFoundError:
             with psycopg2.connect("host=localhost dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
                 cur = conn.cursor()
                 cur.execute(sql);
@@ -25,8 +25,12 @@ class Queries(object):
                     if len(result) == 1:
                         result = result[0]
 
-                Queries.saved_queries[sql] = jsonify(result)
-                return result
+                # Cache the response
+                data = jsonify(result)
+                with open('cache-{}'.format(hash(sql)), mode='wb') as outfile:
+                    pickle.dump(data, outfile)
+
+                return data
 
 def init_db():
     with psycopg2.connect("host=localhost dbname=us-commutes user=postgres password={pwd}".format(pwd=PG_PASSWORD)) as conn:
@@ -81,12 +85,12 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/")
-@cross_origin("/")
+@cross_origin()
 def hello():
     return jsonify("Hello, World!")
 
 @app.route("/map")
-@cross_origin("/map")
+@cross_origin()
 def map():
     query = '''
     SELECT
@@ -125,7 +129,7 @@ def map():
 
 
 @app.route("/percentiles/<column>")
-@cross_origin("/percentiles/<column>")
+@cross_origin()
 def percentiles(column): 
     query = '''SELECT jsonb_build_object(
         0.125, percentile_cont(0.125) WITHIN GROUP(ORDER BY "{col}"),

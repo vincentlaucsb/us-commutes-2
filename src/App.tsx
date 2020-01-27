@@ -72,18 +72,18 @@ class App extends React.Component<{}, AppState> {
     }
 
     componentDidMount() {
-        fetch('http://localhost:5000/map')
+        fetch('http://vincela.com:8000/map')
             .then(response => response.json())
             .then(data => this.setState({ data }));
 
-        fetch(`http://localhost:5000/percentiles/${this.state.column}`)
+        fetch(`http://vincela.com:8000/percentiles/${this.state.column}`)
             .then(response => response.json())
             .then(data => this.setState({ percentiles: data }));
     }
 
     updateColumn(colName: string) {
         this.setState({ column: colName });
-        fetch(`http://localhost:5000/percentiles/${colName}`)
+        fetch(`http://vincela.com:8000/percentiles/${colName}`)
             .then(response => response.json())
             .then(data => {
                 this.setState({ percentiles: data });

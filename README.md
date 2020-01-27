@@ -10,6 +10,9 @@ don't think I'd have the motivation to do much of anything after sitting in traf
 a little tool using US Census data from the 2016 American Community Survey to help people like me make a more informed decision on
 where they'd like to live.
 
+### Version 1
+This app is also a re-write of a [vanilla JavaScript project](https://github.com/vincentlaucsb/us-map) (warning: spaghetti code) that used a Python script to output a static HTML/JavaScript website.
+
 ## Tools Used
 
 * Front-End
